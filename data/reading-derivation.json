@@ -1,0 +1,237 @@
+{
+  "experiment": "EDU-13 deriving a reading",
+  "question": "can the substrate derive a sentence reading from sentence/meaning pairs, and read sentences nobody wrote a pattern for",
+  "recorded_at": "2026-09-18T01:48:20.404686+00:00",
+  "model": {
+    "policy": "model-free by construction",
+    "entry_points_checked": [
+      "core.model_policy",
+      "core.services.unified_llm",
+      "core.services.lightweight_llm",
+      "core.learning.llm_teacher"
+    ],
+    "entry_points_present": []
+  },
+  "supplied": {
+    "lexicon": "six words, classed as copula / determiner / negator",
+    "derived": "which class matters, where, in what order, and what to do about it"
+  },
+  "instruction_set": [
+    {
+      "instruction": "BIND_SUBJECT",
+      "explains": "SUBJECT",
+      "status": "rule_learned",
+      "rule": "BIND_SUBJECT \u2227 WORD(?X0) \u2192 SUBJECT(?X0) \u2296 SUBJECT(nothing)"
+    },
+    {
+      "instruction": "BIND_SUBJECT",
+      "explains": "AT",
+      "status": "rule_learned",
+      "rule": "BIND_SUBJECT \u2227 SUCC(?X1, ?X0) \u2192 AT(?X0) \u2296 AT(?X1)"
+    },
+    {
+      "instruction": "BIND_OBJECT",
+      "explains": "OBJECT",
+      "status": "rule_learned",
+      "rule": "BIND_OBJECT \u2227 WORD(?X0) \u2192 OBJECT(?X0) \u2296 OBJECT(nothing)"
+    },
+    {
+      "instruction": "BIND_OBJECT",
+      "explains": "AT",
+      "status": "rule_learned",
+      "rule": "BIND_OBJECT \u2227 SUCC(?X1, ?X0) \u2192 AT(?X0) \u2296 AT(?X1)"
+    },
+    {
+      "instruction": "MARK_NEGATIVE",
+      "explains": "POLARITY",
+      "status": "rule_learned",
+      "rule": "MARK_NEGATIVE \u2192 POLARITY(denies) \u2296 POLARITY(affirms)"
+    },
+    {
+      "instruction": "MARK_NEGATIVE",
+      "explains": "AT",
+      "status": "rule_learned",
+      "rule": "MARK_NEGATIVE \u2227 SUCC(?X1, ?X0) \u2192 AT(?X0) \u2296 AT(?X1)"
+    },
+    {
+      "instruction": "SKIP",
+      "explains": "AT",
+      "status": "rule_learned",
+      "rule": "SKIP \u2227 SUCC(?X1, ?X0) \u2192 AT(?X0) \u2296 AT(?X1)"
+    },
+    {
+      "instruction": "EMIT",
+      "explains": "READING",
+      "status": "rule_learned",
+      "rule": "EMIT \u2227 OBJECT(?X1) \u2227 POLARITY(?X2) \u2227 SUBJECT(?X0) \u2192 READING(?X0, ?X1, ?X2)"
+    }
+  ],
+  "taught_on": [
+    {
+      "sentence": "robin is a bird",
+      "meaning": [
+        "robin",
+        "bird",
+        "affirms"
+      ]
+    },
+    {
+      "sentence": "the vault is locked",
+      "meaning": [
+        "vault",
+        "locked",
+        "affirms"
+      ]
+    },
+    {
+      "sentence": "a dog is an animal",
+      "meaning": [
+        "dog",
+        "animal",
+        "affirms"
+      ]
+    },
+    {
+      "sentence": "robin is not a mammal",
+      "meaning": [
+        "robin",
+        "mammal",
+        "denies"
+      ]
+    },
+    {
+      "sentence": "the engine is not cold",
+      "meaning": [
+        "engine",
+        "cold",
+        "denies"
+      ]
+    }
+  ],
+  "derivation": {
+    "status": "procedure_derived",
+    "size": 6,
+    "candidates_run": 1464,
+    "procedures": [
+      [
+        "DETERMINER \u2192 BIND_OBJECT",
+        "SUBJECT_UNSET \u2192 BIND_SUBJECT",
+        "COPULA \u2192 BIND_OBJECT",
+        "CONTENT \u2192 BIND_OBJECT",
+        "DONE \u2192 EMIT",
+        "otherwise \u2192 MARK_NEGATIVE"
+      ]
+    ],
+    "detail": ""
+  },
+  "held_out": [
+    {
+      "sentence": "sparrow is a bird",
+      "expected": [
+        "sparrow",
+        "bird",
+        "affirms"
+      ],
+      "produced": [
+        "sparrow",
+        "bird",
+        "affirms"
+      ],
+      "correct": true,
+      "status": "completed"
+    },
+    {
+      "sentence": "the turbine is hot",
+      "expected": [
+        "turbine",
+        "hot",
+        "affirms"
+      ],
+      "produced": [
+        "turbine",
+        "hot",
+        "affirms"
+      ],
+      "correct": true,
+      "status": "completed"
+    },
+    {
+      "sentence": "an ostrich is a bird",
+      "expected": [
+        "ostrich",
+        "bird",
+        "affirms"
+      ],
+      "produced": [
+        "ostrich",
+        "bird",
+        "affirms"
+      ],
+      "correct": true,
+      "status": "completed"
+    },
+    {
+      "sentence": "mercury is a metal",
+      "expected": [
+        "mercury",
+        "metal",
+        "affirms"
+      ],
+      "produced": [
+        "mercury",
+        "metal",
+        "affirms"
+      ],
+      "correct": true,
+      "status": "completed"
+    },
+    {
+      "sentence": "a whale is not a fish",
+      "expected": [
+        "whale",
+        "fish",
+        "denies"
+      ],
+      "produced": [
+        "whale",
+        "fish",
+        "denies"
+      ],
+      "correct": true,
+      "status": "completed"
+    },
+    {
+      "sentence": "the ledger is not balanced",
+      "expected": [
+        "ledger",
+        "balanced",
+        "denies"
+      ],
+      "produced": [
+        "ledger",
+        "balanced",
+        "denies"
+      ],
+      "correct": true,
+      "status": "completed"
+    },
+    {
+      "sentence": "copper is not brittle",
+      "expected": [
+        "copper",
+        "brittle",
+        "denies"
+      ],
+      "produced": [
+        "copper",
+        "brittle",
+        "denies"
+      ],
+      "correct": true,
+      "status": "completed"
+    }
+  ],
+  "held_out_correct": "7/7",
+  "procedures_agree_on_held_out": true,
+  "passed": true
+}
