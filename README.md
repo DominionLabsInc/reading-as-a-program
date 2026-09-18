@@ -5,8 +5,8 @@ language model.**
 
 Stefan Ragland, Dominion Labs Research & Development. Published 21 January 2025.
 
-- Paper: <https://dmnlabs.org/research/reading-as-a-program/>
-- Paper (offline copy): [`paper/reading-as-a-program.html`](paper/reading-as-a-program.html)
+- Paper (PDF): [`paper/reading-as-a-program.pdf`](paper/reading-as-a-program.pdf)
+- Paper (web): <https://dmnlabs.org/research/reading-as-a-program/>
 - Contact: research@dmnlabs.org
 
 ## The result
